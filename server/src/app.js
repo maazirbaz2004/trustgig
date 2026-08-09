@@ -32,6 +32,10 @@ app.get('/api/health', (req, res) => {
   res.json({ status: "ok" });
 });
 
+app.get('/', (req, res) => {
+  res.send('TrustGig API is running');
+});
+
 app.use(errorHandler);
 
 module.exports = app;
