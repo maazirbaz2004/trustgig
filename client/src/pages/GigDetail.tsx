@@ -6,8 +6,10 @@ import api from '../api/axios';
 import { MapPin, Star, User as UserIcon, Clock, ArrowRight, AlertTriangle } from 'lucide-react';
 import { Btn } from '../components/ui/Btn';
 import { Pill } from '../components/ui/Pill';
+import { useAuth } from '../context/AuthContext';
 
 export default function GigDetail() {
+  const { user } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const [gig, setGig] = useState<any>(null);
@@ -95,11 +97,13 @@ export default function GigDetail() {
                   </span>
                 </div>
                 
-                <button 
-                  onClick={() => navigate('/inbox', { state: { freelancer: gig.freelancer } })}
-                  style={{ marginTop: 12, padding: '8px 16px', borderRadius: 6, backgroundColor: T.indigoTint, color: T.indigo, border: 'none', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 600 }}>
-                  Chat with {gig.freelancer?.name.split(' ')[0]}
-                </button>
+                {user?.role === 'client' && (
+                  <button 
+                    onClick={() => navigate('/inbox', { state: { freelancer: gig.freelancer } })}
+                    style={{ marginTop: 12, padding: '8px 16px', borderRadius: 6, backgroundColor: T.indigoTint, color: T.indigo, border: 'none', cursor: 'pointer', fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 600 }}>
+                    Chat with {gig.freelancer?.name.split(' ')[0]}
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -131,14 +135,24 @@ export default function GigDetail() {
             </span>
           </div>
 
-          <Btn variant="indigo" size="lg" onClick={handleBook} disabled={bookingLoading} style={{ width: '100%', height: 48, fontSize: 15 }}>
-            {bookingLoading ? 'Processing...' : 'Book Now'}
-            {!bookingLoading && <ArrowRight size={18} strokeWidth={2} />}
-          </Btn>
+          {user?.role === 'client' ? (
+            <>
+              <Btn variant="indigo" size="lg" onClick={handleBook} disabled={bookingLoading} style={{ width: '100%', height: 48, fontSize: 15 }}>
+                {bookingLoading ? 'Processing...' : 'Book Now'}
+                {!bookingLoading && <ArrowRight size={18} strokeWidth={2} />}
+              </Btn>
 
-          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, color: T.muted, textAlign: 'center', margin: '16px 0 0' }}>
-            Payment is held securely in escrow until you approve the delivered work.
-          </p>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, color: T.muted, textAlign: 'center', margin: '16px 0 0' }}>
+                Payment is held securely in escrow until you approve the delivered work.
+              </p>
+            </>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '16px 0 0', borderTop: `1px solid ${T.border}` }}>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: T.muted, margin: 0 }}>
+                You are viewing this gig as the owner.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>

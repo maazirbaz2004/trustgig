@@ -32,7 +32,7 @@ export default function DashboardLayout({ children, title }: { children: React.R
   const freelancerNav = [
     { path: '/dashboard', icon: <LayoutGrid size={14} strokeWidth={1.8} />, label: 'Dashboard' },
     { path: '/inbox', icon: <MessageSquare size={14} strokeWidth={1.8} />, label: 'Messages' },
-    { path: '/gigs/new', icon: <Briefcase size={14} strokeWidth={1.8} />, label: 'My Gigs' },
+    { path: '/my-gigs', icon: <Briefcase size={14} strokeWidth={1.8} />, label: 'My Gigs' },
     { path: '/wallet', icon: <CreditCard size={14} strokeWidth={1.8} />, label: 'My Wallet' },
   ];
 

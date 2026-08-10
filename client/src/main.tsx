@@ -11,6 +11,7 @@
   import GigForm from "./pages/GigForm";
   import GigsList from "./pages/GigsList";
   import GigDetail from "./pages/GigDetail";
+  import MyGigs from "./pages/MyGigs";
   import DisputeForm from "./pages/DisputeForm";
   import Wallet from "./pages/Wallet";
   import AdminKYC from "./pages/admin/AdminKYC";
@@ -70,8 +71,14 @@
             </ProtectedRoute>
           } />
 
+          <Route path="/my-gigs" element={
+            <ProtectedRoute allowedRoles={['freelancer']}>
+              <MyGigs />
+            </ProtectedRoute>
+          } />
+
           <Route path="/gigs/:id" element={
-            <ProtectedRoute allowedRoles={['client']}>
+            <ProtectedRoute allowedRoles={['client', 'freelancer']}>
               <GigDetail />
             </ProtectedRoute>
           } />
