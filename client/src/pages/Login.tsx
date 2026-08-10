@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Shield, Mail, Lock, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Shield, Mail, Lock, AlertTriangle, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { T } from '../theme/tokens';
 import { Btn } from '../components/ui/Btn';
 import { useAuth } from '../context/AuthContext';
@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -38,8 +39,21 @@ export default function Login() {
       backgroundColor: T.bg,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: 24,
-      fontFamily: 'Inter, sans-serif'
+      fontFamily: 'Inter, sans-serif',
+      position: 'relative'
     }}>
+      <Link to="/" style={{ 
+        position: 'absolute', top: 32, left: 32, 
+        textDecoration: 'none', color: T.muted, 
+        display: 'flex', alignItems: 'center', gap: 6, 
+        fontSize: 14, fontWeight: 600,
+        transition: 'color 0.2s'
+      }}
+        onMouseEnter={e => e.currentTarget.style.color = T.indigo}
+        onMouseLeave={e => e.currentTarget.style.color = T.muted}
+      >
+        <ArrowLeft size={16} strokeWidth={2.5} /> Back to Home
+      </Link>
       <div style={{
         backgroundColor: T.white,
         borderRadius: 16,
@@ -126,14 +140,14 @@ export default function Login() {
               <div style={{ position: 'relative' }}>
                 <Lock size={16} color={T.muted} style={{ position: 'absolute', left: 14, top: 12 }} />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
                   style={{
                     width: '100%', height: 40,
-                    padding: '0 16px 0 40px',
+                    padding: '0 40px 0 40px',
                     borderRadius: 8,
                     border: `1px solid ${T.border}`,
                     fontSize: 14, fontFamily: 'Inter, sans-serif',
@@ -143,6 +157,17 @@ export default function Login() {
                   onFocus={e => e.target.style.borderColor = T.indigo}
                   onBlur={e => e.target.style.borderColor = T.border}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute', right: 12, top: 12,
+                    background: 'none', border: 'none', padding: 0,
+                    cursor: 'pointer', display: 'flex', alignItems: 'center'
+                  }}
+                >
+                  {showPassword ? <EyeOff size={16} color={T.muted} /> : <Eye size={16} color={T.muted} />}
+                </button>
               </div>
             </div>
 
